@@ -29,6 +29,16 @@
 
 - Install your node_modules before starting with `npm install`
 
+### Configurer variable d'environement
+
+Sur Intellij dans `Edit Configuration`
+
+![img_1.png](doc/images/img_1.png)
+![img.png](doc/images/img.png)
+![img_2.png](doc/images/img_2.png)
+
+
+
 ### Starting the project
 
 1. Run `ng serve` for start the development server.
@@ -43,6 +53,22 @@ Run `ng build` to build the project.
 
 > [!NOTE]
 > The build artifacts will be stored in the `dist/` directory.
+
+## ⚙️ Etape du Build
+
+### STEP 1 - Initialisation du projet
+
+### STEP 2 - Authentification JWT
+
+### STEP 3 - Implémentation une route
+
+### STEP 4 - Implémentation Swagger
+
+### STEP 5 - Implémentation des routes
+
+### STEP 6 - Documentation Swagger
+
+### STEP 7 - Nettoyer le code
 
 ## 📄 Documentation
 
