@@ -1,27 +1,32 @@
-package com.chatop.p3chatop.models;
+package com.chatop.p3chatop.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 @Data
 @Entity
-@Table(name= "users")
-public class User {
+@Table(name = "rentals")
+public class Rental {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email", unique = true)
-    private String email;
-
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "password")
-    private String password;
+    private BigDecimal surface;
+
+    private BigDecimal price;
+
+    private String picture;
+
+    private String description;
+
+    @Column(name = "owner_id")
+    private Long ownerId;
 
     @Column(name = "created_at", updatable = false)
     private Date createdAt;
