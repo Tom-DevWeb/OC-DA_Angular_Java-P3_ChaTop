@@ -3,6 +3,7 @@ package com.chatop.p3chatop.controllers;
 import com.chatop.p3chatop.dto.LoginResponseDTO;
 import com.chatop.p3chatop.dto.LoginUserDTO;
 import com.chatop.p3chatop.dto.RegisterUserDTO;
+import com.chatop.p3chatop.dto.TokenResponseDTO;
 import com.chatop.p3chatop.entities.User;
 import com.chatop.p3chatop.services.AuthenticationService;
 import com.chatop.p3chatop.services.JwtService;
@@ -24,23 +25,17 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody RegisterUserDTO registerUserDto) {
-        User registeredUser = authenticationService.signup(registerUserDto);
+    public ResponseEntity<TokenResponseDTO> register(@RequestBody RegisterUserDTO registerUserDto) {
+        TokenResponseDTO registeredUser = authenticationService.signup(registerUserDto);
 
         return ResponseEntity.ok(registeredUser);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> authenticate(@RequestBody LoginUserDTO loginUserDto) {
-        User authenticatedUser = authenticationService.authenticate(loginUserDto);
+    public ResponseEntity<TokenResponseDTO> authenticate(@RequestBody LoginUserDTO loginUserDto) {
+        TokenResponseDTO authenticatedUser = authenticationService.authenticate(loginUserDto);
 
-        String jwtToken = jwtService.generateToken(authenticatedUser);
-
-        LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
-        loginResponseDTO.setToken(jwtToken);
-        loginResponseDTO.setExpiresIn(jwtService.getExpirationTime());
-
-        return ResponseEntity.ok(loginResponseDTO);
+        return ResponseEntity.ok(authenticatedUser);
     }
 
     @GetMapping("/me")

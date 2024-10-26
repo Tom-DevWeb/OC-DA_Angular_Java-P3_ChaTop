@@ -1,5 +1,7 @@
 package com.chatop.p3chatop.services;
 
+import com.chatop.p3chatop.dto.TokenResponseDTO;
+import com.chatop.p3chatop.entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -38,10 +40,6 @@ public class JwtService {
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return buildToken(extraClaims, userDetails, jwtExpiration);
-    }
-
-    public long getExpirationTime() {
-        return jwtExpiration;
     }
 
     private String buildToken(
@@ -84,5 +82,17 @@ public class JwtService {
     private Key getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    /**
+     * Générer un token à transmettre à la couche application
+     * @param user Récupéré en BDD
+     * @return token correspondant à l'utilisateur
+     */
+    public TokenResponseDTO generateTokenResponse(User user) {
+        String token = generateToken(user);
+        TokenResponseDTO tokenResponseDTO = new TokenResponseDTO();
+        tokenResponseDTO.setToken(token);
+        return tokenResponseDTO;
     }
 }

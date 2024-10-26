@@ -2,6 +2,7 @@ package com.chatop.p3chatop.services;
 
 import com.chatop.p3chatop.dto.LoginUserDTO;
 import com.chatop.p3chatop.dto.RegisterUserDTO;
+import com.chatop.p3chatop.dto.TokenResponseDTO;
 import com.chatop.p3chatop.entities.User;
 import com.chatop.p3chatop.repositories.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,26 +18,32 @@ public class AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
 
+    private final JwtService jwtService;
+
     public AuthenticationService(
             UserRepository userRepository,
             AuthenticationManager authenticationManager,
-            PasswordEncoder passwordEncoder
+            PasswordEncoder passwordEncoder,
+            JwtService jwtService
     ) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
-    public User signup(RegisterUserDTO input) {
+    public TokenResponseDTO signup(RegisterUserDTO input) {
         User user = new User();
         user.setName(input.getName());
         user.setEmail(input.getEmail());
         user.setPassword(passwordEncoder.encode(input.getPassword()));
 
-        return userRepository.save(user);
+        userRepository.save(user);
+
+        return jwtService.generateTokenResponse(user);
     }
 
-    public User authenticate(LoginUserDTO input) {
+    public TokenResponseDTO authenticate(LoginUserDTO input) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         input.getEmail(),
@@ -44,8 +51,8 @@ public class AuthenticationService {
                 )
         );
 
-        return userRepository.findByEmail(input.getEmail())
-                .orElseThrow();
-    }
+        User user = userRepository.findByEmail(input.getEmail()).orElseThrow();
 
+        return jwtService.generateTokenResponse(user);
+    }
 }
