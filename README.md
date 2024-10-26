@@ -62,6 +62,8 @@ Run `ng build` to build the project.
 
 ### STEP 3 - Implémentation une route
 
+Implémentation de la route `/auth/*`
+
 ### STEP 4 - Implémentation Swagger
 
 ### STEP 5 - Implémentation des routes
