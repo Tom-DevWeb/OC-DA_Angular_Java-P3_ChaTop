@@ -74,11 +74,17 @@ Run `ng build` to build the project.
 
 ### Architecture
 
-The predefined architecture includes (in addition to the default angular architecture) the following:
+Couche / Objectif
 
-- `core` folder: contains the business logic (`services` and `models` folders)
-- `pages` folder: contains components used for routing
-- `shared` folder: contains reusable components
+controller / Réceptionner la requête et fournir la réponse
+
+service / Exécuter les traitements métiers
+
+repository / Communiquer avec la source de données
+
+model / Contenir les objets métiers
+
+
 
 ### Mock Data
 
