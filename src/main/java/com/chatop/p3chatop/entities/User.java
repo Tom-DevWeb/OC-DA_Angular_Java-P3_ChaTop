@@ -1,6 +1,8 @@
 package com.chatop.p3chatop.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,7 +12,8 @@ import java.sql.Date;
 import java.util.Collection;
 import java.util.List;
 
-
+@Getter
+@Setter
 @Entity
 @Table(name= "users")
 public class User implements UserDetails {
@@ -70,18 +73,6 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
 }
