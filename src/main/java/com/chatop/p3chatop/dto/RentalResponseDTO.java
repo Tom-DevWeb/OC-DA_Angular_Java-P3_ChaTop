@@ -1,6 +1,5 @@
-package com.chatop.p3chatop.entities;
+package com.chatop.p3chatop.dto;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,12 +8,7 @@ import java.sql.Date;
 
 @Getter
 @Setter
-@Entity
-@Table(name = "rentals")
-public class Rental {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class RentalResponseDTO {
     private Integer id;
 
     private String name;
@@ -27,12 +21,9 @@ public class Rental {
 
     private String description;
 
-    @Column(name = "owner_id")
     private Integer ownerId;
 
-    @Column(name = "created_at", updatable = false)
     private Date createdAt;
 
-    @Column(name = "updated_at")
     private Date updatedAt;
 }
