@@ -25,9 +25,6 @@
 
 ### Prerequisites
 
-- Fork or Clone this project
-
-- Install your node_modules before starting with `npm install`
 
 ### Configurer variable d'environement
 
@@ -66,6 +63,8 @@ Implémentation de la route `/auth/*`
 
 ### STEP 4 - Implémentation Swagger
 
+Ajout de la dépendance `org.springdoc`
+
 ### STEP 5 - Implémentation des routes
 
 ### STEP 6 - Documentation Swagger
@@ -94,26 +93,4 @@ model / Contenir les objets métiers
 
 ### Models
 
-```typescript
-//Olympic.ts
-class Olympic {
-  id!: number;
-  country!: string;
-  participations!: Participation[];
-}
-```
 
-```typescript
-//Participation.ts
-class Participation {
-  id!: number;
-  year!: number;
-  city!: string;
-  medalsCount!: number;
-  athleteCount!: number;
-}
-```
-
-### Library
-
-- `ngx-charts` library: for graphics
