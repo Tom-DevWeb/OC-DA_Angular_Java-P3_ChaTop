@@ -4,9 +4,9 @@ import com.chatop.p3chatop.dto.LoginUserDTO;
 import com.chatop.p3chatop.dto.MeResponseDTO;
 import com.chatop.p3chatop.dto.RegisterUserDTO;
 import com.chatop.p3chatop.dto.TokenResponseDTO;
-import com.chatop.p3chatop.entities.User;
 import com.chatop.p3chatop.repositories.UserRepository;
 import com.chatop.p3chatop.services.AuthenticationService;
+import com.chatop.p3chatop.services.UserInfoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -27,11 +27,11 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
-    private final UserRepository userRepository;
+    private final UserInfoService userInfoService;
 
-    public AuthenticationController(AuthenticationService authenticationService, UserRepository userRepository) {
+    public AuthenticationController(AuthenticationService authenticationService, UserRepository userRepository, UserInfoService userInfoService) {
         this.authenticationService = authenticationService;
-        this.userRepository = userRepository;
+        this.userInfoService = userInfoService;
     }
 
 
@@ -84,14 +84,8 @@ public class AuthenticationController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         String email = authentication.getName();
-        User user = userRepository.findByEmail(email).orElseThrow();
 
-        MeResponseDTO meResponseDTO = new MeResponseDTO();
-        meResponseDTO.setId(user.getId());
-        meResponseDTO.setName(user.getName());
-        meResponseDTO.setEmail(email);
-        meResponseDTO.setCreated_at(user.getCreatedAt());
-        meResponseDTO.setUpdated_at(user.getUpdatedAt());
+        MeResponseDTO meResponseDTO = userInfoService.getUser(email);
 
         return ResponseEntity.ok(meResponseDTO);
     }
