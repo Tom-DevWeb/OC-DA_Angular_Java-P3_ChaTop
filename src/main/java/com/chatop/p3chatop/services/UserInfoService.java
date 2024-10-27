@@ -3,7 +3,6 @@ package com.chatop.p3chatop.services;
 import com.chatop.p3chatop.dto.MeResponseDTO;
 import com.chatop.p3chatop.entities.User;
 import com.chatop.p3chatop.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
