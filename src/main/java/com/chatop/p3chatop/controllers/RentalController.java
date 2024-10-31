@@ -5,6 +5,7 @@ import com.chatop.p3chatop.dto.RentalRequestDTO;
 import com.chatop.p3chatop.dto.RentalResponseDTO;
 import com.chatop.p3chatop.services.RentalService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,14 +44,14 @@ public class RentalController {
     }
 
     @PostMapping(value = "")
-    public ResponseEntity<RentalMsgResponseDTO> createRental(@ModelAttribute RentalRequestDTO rentalRequestDTO) {
+    public ResponseEntity<RentalMsgResponseDTO> createRental(@Valid @ModelAttribute RentalRequestDTO rentalRequestDTO) {
         RentalMsgResponseDTO response = rentalService.createRental(rentalRequestDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RentalMsgResponseDTO> updateRental(@PathVariable Integer id, @ModelAttribute RentalRequestDTO rentalRequestDTO) {
+    public ResponseEntity<RentalMsgResponseDTO> updateRental(@PathVariable Integer id, @Valid @ModelAttribute RentalRequestDTO rentalRequestDTO) {
         RentalMsgResponseDTO response = rentalService.updateRental(id, rentalRequestDTO);
 
         return ResponseEntity.ok(response);

@@ -54,11 +54,17 @@ public class RentalService {
 
     public RentalMsgResponseDTO createRental(RentalRequestDTO rentalRequestDTO) {
 
-        String imagePath = imageFileService.uploadImage(rentalRequestDTO.getPicture());
-
         Rental rental = rentalMapper.toRental(rentalRequestDTO);
 
-        rental.setPicture(imagePath);
+        if (rentalRequestDTO.getPicture() != null) {
+            try {
+                String imagePath = imageFileService.uploadImage(rentalRequestDTO.getPicture());
+                rental.setPicture(imagePath);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to upload image: " + e.getMessage());
+            }
+        }
+
         rental.setOwnerId(userIdService.getId());
 
         rentalRepository.save(rental);
