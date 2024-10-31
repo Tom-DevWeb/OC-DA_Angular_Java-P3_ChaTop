@@ -1,5 +1,6 @@
 package com.chatop.p3chatop.controllers;
 
+import com.chatop.p3chatop.dto.RentalMsgResponseDTO;
 import com.chatop.p3chatop.dto.RentalRequestDTO;
 import com.chatop.p3chatop.dto.RentalResponseDTO;
 import com.chatop.p3chatop.services.RentalService;
@@ -8,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Tag(name = "Rental", description = "Rental management APIs")
 @RequestMapping("/rentals")
@@ -22,10 +25,14 @@ public class RentalController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<RentalResponseDTO>> getRentals() {
+    public ResponseEntity<Map<String, List<RentalResponseDTO>>> getRentals() {
+
         List<RentalResponseDTO> rentalResponseDTOs = rentalService.getRentals();
 
-        return ResponseEntity.ok(rentalResponseDTOs);
+        Map<String, List<RentalResponseDTO>> response = new HashMap<>();
+        response.put("rentals", rentalResponseDTOs);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
@@ -35,18 +42,18 @@ public class RentalController {
         return ResponseEntity.ok(rentalResponseDTO);
     }
 
-    @PostMapping("")
-    public ResponseEntity<RentalResponseDTO> createRental(@RequestBody RentalRequestDTO rentalRequestDTO) {
-        RentalResponseDTO rentalResponseDTO = rentalService.createRental(rentalRequestDTO);
+    @PostMapping(value = "")
+    public ResponseEntity<RentalMsgResponseDTO> createRental(@ModelAttribute RentalRequestDTO rentalRequestDTO) {
+        RentalMsgResponseDTO response = rentalService.createRental(rentalRequestDTO);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(rentalResponseDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RentalResponseDTO> updateRental(@PathVariable Integer id, @RequestBody RentalRequestDTO rentalRequestDTO) {
-        RentalResponseDTO rentalResponseDTO = rentalService.updateRental(id, rentalRequestDTO);
+    public ResponseEntity<RentalMsgResponseDTO> updateRental(@PathVariable Integer id, @ModelAttribute RentalRequestDTO rentalRequestDTO) {
+        RentalMsgResponseDTO response = rentalService.updateRental(id, rentalRequestDTO);
 
-        return ResponseEntity.ok(rentalResponseDTO);
+        return ResponseEntity.ok(response);
     }
 
 
