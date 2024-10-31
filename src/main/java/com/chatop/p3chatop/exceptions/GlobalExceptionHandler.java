@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -19,6 +20,14 @@ public class GlobalExceptionHandler {
         ErrorResponseDTO error = new ErrorResponseDTO();
         error.setMessage(ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error); // 400
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponseDTO> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        ErrorResponseDTO error = new ErrorResponseDTO();
+        error.setMessage("Validation error");
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error); //400
     }
 
     @ExceptionHandler(BadCredentialsException.class)
