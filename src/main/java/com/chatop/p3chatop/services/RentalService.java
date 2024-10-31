@@ -8,15 +8,11 @@ import com.chatop.p3chatop.entities.Rental;
 import com.chatop.p3chatop.exceptions.ResourceNotFoundException;
 import com.chatop.p3chatop.mappers.RentalMapper;
 import com.chatop.p3chatop.repositories.RentalRepository;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 
-@Getter
-@Setter
 @Service
 public class RentalService {
 
