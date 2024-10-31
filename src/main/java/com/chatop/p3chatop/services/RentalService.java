@@ -5,12 +5,14 @@ import com.chatop.p3chatop.dto.RentalMsgResponseDTO;
 import com.chatop.p3chatop.dto.RentalRequestDTO;
 import com.chatop.p3chatop.dto.RentalResponseDTO;
 import com.chatop.p3chatop.entities.Rental;
+import com.chatop.p3chatop.exceptions.ResourceNotFoundException;
 import com.chatop.p3chatop.mappers.RentalMapper;
 import com.chatop.p3chatop.repositories.RentalRepository;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -43,7 +45,8 @@ public class RentalService {
 
 
     public RentalResponseDTO getRental(Integer id) {
-        Rental rental = rentalRepository.findById(id).orElseThrow();
+        Rental rental = rentalRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Rental not found"));
 
         return rentalMapper.toRentalResponseDTO(rental);
     }
@@ -65,7 +68,7 @@ public class RentalService {
 
     public RentalMsgResponseDTO updateRental(Integer id, RentalRequestDTO rentalRequestDTO) {
         Rental rental = rentalRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Rental not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Rental not found"));
 
         if (rentalRequestDTO.getName() != null) {
             rental.setName(rentalRequestDTO.getName());
@@ -79,6 +82,7 @@ public class RentalService {
         if (rentalRequestDTO.getDescription() != null) {
             rental.setDescription(rentalRequestDTO.getDescription());
         }
+        rental.setUpdatedAt(new Date());
 
         rentalRepository.save(rental);
 
