@@ -1,19 +1,24 @@
 package com.chatop.p3chatop.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "rentals")
 public class Rental {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(nullable = false)
+    private Integer id;
 
     private String name;
 
@@ -23,14 +28,17 @@ public class Rental {
 
     private String picture;
 
+    @Lob
     private String description;
 
     @Column(name = "owner_id")
-    private Long ownerId;
+    private Integer ownerId;
 
+    @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private Date createdAt;
 
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
 }

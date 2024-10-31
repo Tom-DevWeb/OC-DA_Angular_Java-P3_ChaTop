@@ -4,9 +4,8 @@ import com.chatop.p3chatop.dto.LoginUserDTO;
 import com.chatop.p3chatop.dto.MeResponseDTO;
 import com.chatop.p3chatop.dto.RegisterUserDTO;
 import com.chatop.p3chatop.dto.TokenResponseDTO;
-import com.chatop.p3chatop.entities.User;
-import com.chatop.p3chatop.repositories.UserRepository;
 import com.chatop.p3chatop.services.AuthenticationService;
+import com.chatop.p3chatop.services.UserInfoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -16,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,11 +27,11 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
-    private final UserRepository userRepository;
+    private final UserInfoService userInfoService;
 
-    public AuthenticationController(AuthenticationService authenticationService, UserRepository userRepository) {
+    public AuthenticationController(AuthenticationService authenticationService, UserInfoService userInfoService) {
         this.authenticationService = authenticationService;
-        this.userRepository = userRepository;
+        this.userInfoService = userInfoService;
     }
 
 
@@ -43,7 +43,7 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = TokenResponseDTO.class), mediaType = "application/json") }),
     })
     @PostMapping("/register")
-    public ResponseEntity<TokenResponseDTO> register(@RequestBody RegisterUserDTO registerUserDto) {
+    public ResponseEntity<TokenResponseDTO> register(@Valid @RequestBody RegisterUserDTO registerUserDto) {
         TokenResponseDTO registeredUser = authenticationService.signup(registerUserDto);
 
         return ResponseEntity.ok(registeredUser);
@@ -59,7 +59,7 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "401", content = { @Content(schema = @Schema()) }),
     })
     @PostMapping("/login")
-    public ResponseEntity<TokenResponseDTO> authenticate(@RequestBody LoginUserDTO loginUserDto) {
+    public ResponseEntity<TokenResponseDTO> authenticate(@Valid @RequestBody LoginUserDTO loginUserDto) {
         TokenResponseDTO authenticatedUser = authenticationService.authenticate(loginUserDto);
 
         return ResponseEntity.ok(authenticatedUser);
@@ -84,14 +84,8 @@ public class AuthenticationController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         String email = authentication.getName();
-        User user = userRepository.findByEmail(email).orElseThrow();
 
-        MeResponseDTO meResponseDTO = new MeResponseDTO();
-        meResponseDTO.setId(user.getId());
-        meResponseDTO.setName(user.getName());
-        meResponseDTO.setEmail(email);
-        meResponseDTO.setCreated_at(user.getCreatedAt());
-        meResponseDTO.setUpdated_at(user.getUpdatedAt());
+        MeResponseDTO meResponseDTO = userInfoService.getUser(email);
 
         return ResponseEntity.ok(meResponseDTO);
     }
