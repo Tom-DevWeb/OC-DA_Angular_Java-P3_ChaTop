@@ -1,6 +1,7 @@
 package com.chatop.p3chatop.services;
 
 import com.chatop.p3chatop.entities.User;
+import com.chatop.p3chatop.exceptions.ResourceNotFoundException;
 import com.chatop.p3chatop.repositories.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +22,8 @@ public class UserIdService {
 
         String email = authentication.getName();
 
-        User user = userRepository.findByEmail(email).orElseThrow();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return user.getId();
     }
 }

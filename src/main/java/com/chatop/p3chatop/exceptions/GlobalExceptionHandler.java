@@ -13,34 +13,53 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponseDTO> handleSecurityException(Exception exception) {
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handleResourceNotFound(ResourceNotFoundException ex) {
         ErrorResponseDTO error = new ErrorResponseDTO();
+        error.setMessage(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error); // 400
+    }
 
-        if (exception instanceof BadCredentialsException) { // 401
-            error.setMessage("error");
-        }
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponseDTO> handleBadCredentialsException(BadCredentialsException exception) {
+        ErrorResponseDTO error = new ErrorResponseDTO();
+        error.setMessage("Invalid credentials");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error); // 401
+    }
 
-        if (exception instanceof AccountStatusException) { // 403
-            error.setMessage("The account is locked");
-        }
+    @ExceptionHandler(AccountStatusException.class)
+    public ResponseEntity<ErrorResponseDTO> handleAccountStatusException(AccountStatusException exception) {
+        ErrorResponseDTO error = new ErrorResponseDTO();
+        error.setMessage("The account is locked");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error); // 403
+    }
 
-        if (exception instanceof AccessDeniedException) { // 403
-            error.setMessage("You are not authorized to access this resource");
-        }
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponseDTO> handleAccessDeniedException(AccessDeniedException exception) {
+        ErrorResponseDTO error = new ErrorResponseDTO();
+        error.setMessage("You are not authorized to access this resource");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error); // 403
+    }
 
-        if (exception instanceof SignatureException) { // 403
-            error.setMessage("The JWT signature is invalid");
-        }
+    @ExceptionHandler(SignatureException.class)
+    public ResponseEntity<ErrorResponseDTO> handleSignatureException(SignatureException exception) {
+        ErrorResponseDTO error = new ErrorResponseDTO();
+        error.setMessage("The JWT signature is invalid");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error); // 403
+    }
 
-        if (exception instanceof ExpiredJwtException) { // 403
-            error.setMessage("The JWT token has expired");
-        }
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<ErrorResponseDTO> handleExpiredJwtException(ExpiredJwtException exception) {
+        ErrorResponseDTO error = new ErrorResponseDTO();
+        error.setMessage("The JWT token has expired");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error); // 403
+    }
 
-        if (error.getMessage() == null) { // 500
-            error.setMessage("Unknown internal server error.");
-        }
-
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponseDTO> handleGeneralException(Exception exception) {
+        ErrorResponseDTO error = new ErrorResponseDTO();
+        error.setMessage("Unknown internal server error.");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error); // 500
     }
 }
