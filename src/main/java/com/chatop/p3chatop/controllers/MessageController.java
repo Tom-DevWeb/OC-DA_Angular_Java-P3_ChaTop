@@ -3,6 +3,14 @@ package com.chatop.p3chatop.controllers;
 import com.chatop.p3chatop.dto.MessageRequestDTO;
 import com.chatop.p3chatop.dto.MessageResponseDTO;
 import com.chatop.p3chatop.services.MessageService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -23,6 +31,24 @@ public class MessageController {
         this.messageService = messageService;
     }
 
+    @Operation(
+            summary = "Créer un nouveau message",
+            description = "Permet de créer un nouveau message avec les informations fournies.",
+            security = { @SecurityRequirement(name = "bearerAuth")}
+    )
+    @Parameters({
+            @Parameter(
+                    name = "Authorization", description = "Bearer Token", required = true
+            )
+    })
+    @ApiResponses({
+            @ApiResponse(responseCode = "201",
+                    content = { @Content(schema = @Schema(implementation = MessageResponseDTO.class), mediaType = "application/json") }),
+            @ApiResponse(responseCode = "400",
+                    content = { @Content(schema = @Schema()) }),
+            @ApiResponse(responseCode = "401",
+                    content = { @Content(schema = @Schema()) })
+    })
     @PostMapping("")
     public ResponseEntity<MessageResponseDTO> createMsg(@Valid @RequestBody MessageRequestDTO messageRequestDTO) {
         MessageResponseDTO response = messageService.createMsg(messageRequestDTO);

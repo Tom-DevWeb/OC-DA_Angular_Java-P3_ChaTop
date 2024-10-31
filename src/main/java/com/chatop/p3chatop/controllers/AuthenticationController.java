@@ -35,8 +35,13 @@ public class AuthenticationController {
     }
 
 
+    /**
+     * POST /auth/register => S'inscire
+     * @param registerUserDto
+     * @return
+     */
     @Operation(
-            summary = "Authentification d'un utilisateur",
+            summary = "Inscription d'un utilisateur",
             description = "Authentifie un utilisateur avec les informations fournies."
     )
     @ApiResponses({
@@ -49,9 +54,13 @@ public class AuthenticationController {
         return ResponseEntity.ok(registeredUser);
     }
 
-
+    /**
+     * POST /auth/login => Se connecter
+     * @param loginUserDto
+     * @return
+     */
     @Operation(
-            summary = "Authentification d'un utilisateur",
+            summary = "Connexion d'un utilisateur",
             description = "Authentifie un utilisateur avec les informations fournies."
     )
     @ApiResponses({
@@ -65,7 +74,10 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticatedUser);
     }
 
-
+    /**
+     * GET /auth/me => Récupérer des infos sur son profile
+     * @return
+     */
     @Operation(
             summary = "Informations de l'utilisateur authentifié",
             description = "Récupère les informations de l'utilisateur authentifié.",
