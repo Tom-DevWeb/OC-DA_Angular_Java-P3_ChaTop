@@ -63,7 +63,7 @@ DATABASE_PASSWORD -> mdp_mysql
 JWT_SECRET_KEY -> générer_avec_openssl
 
 ```
-> [!TIPS]
+> [!TIP]
 > Vous pouvez générer votre JWT_SECRET_KEY avec la commande:
 > `openssl rand -base64 32`
 
