@@ -3,6 +3,7 @@ package com.chatop.p3chatop.controllers;
 import com.chatop.p3chatop.dto.RentalMsgResponseDTO;
 import com.chatop.p3chatop.dto.RentalRequestDTO;
 import com.chatop.p3chatop.dto.RentalResponseDTO;
+import com.chatop.p3chatop.exceptions.ResourceNotFoundException;
 import com.chatop.p3chatop.services.RentalService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -33,7 +34,7 @@ public class RentalController {
 
     /**
      * GET /rentals/ => Récupérer toutes les locations
-     * @return
+     * @return la liste des locations
      */
     @Operation(
             summary = "Récupérer toutes les locations",
@@ -59,8 +60,8 @@ public class RentalController {
 
     /**
      * GET /rentals/{id} => Récupérer une location par ID
-     * @param id
-     * @return
+     * @param id de la location à récupérer
+     * @return la location correspondanr à l'id
      */
     @Operation(
             summary = "Récupérer une location par ID",
@@ -83,8 +84,8 @@ public class RentalController {
 
     /**
      * POST /rentals/{id} => Créer une location
-     * @param rentalRequestDTO
-     * @return
+     * @param rentalRequestDTO contenu d'une location
+     * @return message de confirmation creation
      */
     @Operation(
             summary = "Créer une nouvelle location",
@@ -107,6 +108,9 @@ public class RentalController {
     })
     @PostMapping(value = "", consumes = "multipart/form-data")
     public ResponseEntity<RentalMsgResponseDTO> createRental(@Valid @ModelAttribute RentalRequestDTO rentalRequestDTO) {
+        if (rentalRequestDTO.getPicture() == null || rentalRequestDTO.getPicture().isEmpty()) {
+            throw new ResourceNotFoundException("Picture is missing!");
+        }
         RentalMsgResponseDTO response = rentalService.createRental(rentalRequestDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -114,9 +118,9 @@ public class RentalController {
 
     /**
      * PUT /rentals/{id} => Mettre à jour une location
-     * @param id
-     * @param rentalRequestDTO
-     * @return
+     * @param id de la location à mettre à jour
+     * @param rentalRequestDTO nouvelles infos location
+     * @return message de confirmation mise à jour
      */
     @Operation(
             summary = "Mettre à jour une location",

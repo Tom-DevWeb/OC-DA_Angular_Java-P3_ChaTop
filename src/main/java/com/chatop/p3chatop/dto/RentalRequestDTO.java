@@ -17,6 +17,7 @@ public class RentalRequestDTO {
     private BigDecimal surface;
     @NotNull
     private BigDecimal price;
+    @NotNull
     private MultipartFile picture;
     @NotBlank
     private String description;
