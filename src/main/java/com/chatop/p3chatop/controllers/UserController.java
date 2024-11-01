@@ -3,8 +3,6 @@ package com.chatop.p3chatop.controllers;
 import com.chatop.p3chatop.dto.MeResponseDTO;
 import com.chatop.p3chatop.services.UserInfoService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -30,14 +28,9 @@ public class UserController {
 
     @Operation(
             summary = "Récupérer un utilisateur par ID",
-            description = "Récupère les informations d'un utilisateur en fonction de son ID.",
-            security = { @SecurityRequirement(name = "bearerAuth") }
+            description = "Récupère les informations d'un utilisateur en fonction de son ID."
     )
-    @Parameters({
-            @Parameter(
-                    name = "Authorization", description = "Bearer Token", required = true
-            )
-    })
+    @SecurityRequirement(name = "Bearer Authentication")
     @ApiResponses({
             @ApiResponse(responseCode = "200",
                     content = { @Content(schema = @Schema(implementation = MeResponseDTO.class), mediaType = "application/json") }),

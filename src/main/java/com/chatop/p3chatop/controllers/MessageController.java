@@ -4,8 +4,6 @@ import com.chatop.p3chatop.dto.MessageRequestDTO;
 import com.chatop.p3chatop.dto.MessageResponseDTO;
 import com.chatop.p3chatop.services.MessageService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -34,13 +32,8 @@ public class MessageController {
     @Operation(
             summary = "Créer un nouveau message",
             description = "Permet de créer un nouveau message avec les informations fournies.",
-            security = { @SecurityRequirement(name = "bearerAuth")}
+            security = { @SecurityRequirement(name = "Bearer Authentication") }
     )
-    @Parameters({
-            @Parameter(
-                    name = "Authorization", description = "Bearer Token", required = true
-            )
-    })
     @ApiResponses({
             @ApiResponse(responseCode = "201",
                     content = { @Content(schema = @Schema(implementation = MessageResponseDTO.class), mediaType = "application/json") }),

@@ -5,8 +5,6 @@ import com.chatop.p3chatop.dto.RentalRequestDTO;
 import com.chatop.p3chatop.dto.RentalResponseDTO;
 import com.chatop.p3chatop.services.RentalService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -40,13 +38,8 @@ public class RentalController {
     @Operation(
             summary = "Récupérer toutes les locations",
             description = "Récupère la liste de toutes les locations.",
-            security = { @SecurityRequirement(name = "bearerAuth") }
+            security = { @SecurityRequirement(name = "Bearer Authentication") }
     )
-    @Parameters({
-            @Parameter(
-                    name = "Authorization", description = "Bearer Token", required = true
-            )
-    })
     @ApiResponses({
             @ApiResponse(responseCode = "200",
                     content = { @Content(schema = @Schema(implementation = RentalResponseDTO.class), mediaType = "application/json") }),
@@ -72,13 +65,9 @@ public class RentalController {
     @Operation(
             summary = "Récupérer une location par ID",
             description = "Récupère les informations d'une location en fonction de son ID.",
-            security = { @SecurityRequirement(name = "bearerAuth") }
+            security = { @SecurityRequirement(name = "Bearer Authentication") }
     )
-    @Parameters({
-            @Parameter(
-                    name = "Authorization", description = "Bearer Token", required = true
-            )
-    })
+    @SecurityRequirement(name = "Bearer Authentication")
     @ApiResponses({
             @ApiResponse(responseCode = "200",
                     content = { @Content(schema = @Schema(implementation = RentalResponseDTO.class), mediaType = "application/json") }),
@@ -100,7 +89,7 @@ public class RentalController {
     @Operation(
             summary = "Créer une nouvelle location",
             description = "Permet de créer une nouvelle location avec les informations fournies.",
-            security = { @SecurityRequirement(name = "bearerAuth") },
+            security = { @SecurityRequirement(name = "Bearer Authentication") },
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(
                             mediaType = "multipart/form-data",
@@ -108,11 +97,6 @@ public class RentalController {
                     )
             )
     )
-    @Parameters({
-            @Parameter(
-                    name = "Authorization", description = "Bearer Token", required = true
-            )
-    })
     @ApiResponses({
             @ApiResponse(responseCode = "201",
                     content = { @Content(schema = @Schema(implementation = RentalMsgResponseDTO.class), mediaType = "application/json") }),
@@ -137,7 +121,7 @@ public class RentalController {
     @Operation(
             summary = "Mettre à jour une location",
             description = "Met à jour les informations d'une location existante.",
-            security = { @SecurityRequirement(name = "bearerAuth") },
+            security = { @SecurityRequirement(name = "Bearer Authentication") },
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(
                             mediaType = "multipart/form-data",
@@ -145,11 +129,6 @@ public class RentalController {
                     )
             )
     )
-    @Parameters({
-            @Parameter(
-                    name = "Authorization", description = "Bearer Token", required = true
-            )
-    })
     @ApiResponses({
             @ApiResponse(responseCode = "200",
                     content = { @Content(schema = @Schema(implementation = RentalMsgResponseDTO.class), mediaType = "application/json") }),
