@@ -7,9 +7,8 @@ import com.chatop.p3chatop.dto.TokenResponseDTO;
 import com.chatop.p3chatop.services.AuthenticationService;
 import com.chatop.p3chatop.services.UserInfoService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -35,12 +34,24 @@ public class AuthenticationController {
     }
 
 
+    /**
+     * POST /auth/register => S'inscire
+     * @param registerUserDto
+     * @return
+     */
     @Operation(
-            summary = "Authentification d'un utilisateur",
-            description = "Authentifie un utilisateur avec les informations fournies."
+            summary = "Inscription d'un utilisateur",
+            description = "Authentifie un utilisateur avec les informations fournies.",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = LoginUserDTO.class),
+                            examples = {@ExampleObject("{\"name\":\"John Doe\", \"email\":\"johndoe@example.com\", \"password\":\"password123\"}")}
+                    )
+            )
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = TokenResponseDTO.class), mediaType = "application/json") }),
+            @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = TokenResponseDTO.class), mediaType = "application/json")}),
     })
     @PostMapping("/register")
     public ResponseEntity<TokenResponseDTO> register(@Valid @RequestBody RegisterUserDTO registerUserDto) {
@@ -49,10 +60,21 @@ public class AuthenticationController {
         return ResponseEntity.ok(registeredUser);
     }
 
-
+    /**
+     * POST /auth/login => Se connecter
+     * @param loginUserDto
+     * @return
+     */
     @Operation(
-            summary = "Authentification d'un utilisateur",
-            description = "Authentifie un utilisateur avec les informations fournies."
+            summary = "Connexion d'un utilisateur",
+            description = "Authentifie un utilisateur avec les informations fournies.",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = LoginUserDTO.class),
+                            examples = {@ExampleObject("{\"email\":\"johndoe@example.com\", \"password\":\"password123\"}")}
+                    )
+            )
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = TokenResponseDTO.class), mediaType = "application/json") }),
@@ -65,19 +87,18 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticatedUser);
     }
 
-
+    /**
+     * GET /auth/me => Récupérer des infos sur son profile
+     * @return
+     */
     @Operation(
             summary = "Informations de l'utilisateur authentifié",
-            description = "Récupère les informations de l'utilisateur authentifié.",
-            security = { @SecurityRequirement(name = "bearerAuth")}
+            description = "Récupère les informations de l'utilisateur authentifié."
     )
+    @SecurityRequirement(name = "Bearer Authentication")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(implementation = MeResponseDTO.class), mediaType = "application/json")}),
-    })
-    @Parameters({
-            @Parameter(
-                    name = "Authorization", description = "Bearer Token", required = true
-            )
+            @ApiResponse(responseCode = "200", content = {@Content(schema = @Schema(
+                    implementation = MeResponseDTO.class), mediaType = "application/json")}),
     })
     @GetMapping("/me")
     public ResponseEntity<MeResponseDTO> authenticatedUser() {
