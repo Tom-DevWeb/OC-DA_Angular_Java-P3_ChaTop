@@ -17,7 +17,7 @@ Ce projet est centré sur le développement d'un serveur Back-end avec Spring Bo
     - [Prérequis](#prérequis)
     - [Importer la base de données MySQL](#importer-la-base-de-donnée-mysql)
     - [Variables d'environnement](#variable-denvironnement)
-    - [Build le projet](#build-the-project)
+    - [Build le projet](#build-le-projet)
     - [Build l'artifact](#build-lartifact)
 - [Etape de conception](#-etape-de-conception)
 - [Documentation](#-documentation)
@@ -31,7 +31,7 @@ Ce projet est centré sur le développement d'un serveur Back-end avec Spring Bo
 ### Prérequis
 
 1. Fork ou cloner ce projet
-2. Installer [MySQL 8 command Line](https://openclassrooms.com/fr/courses/6971126-implementez-vos-bases-de-donnees-relationnelles-avec-sql/7152681-installez-le-sgbd-mysql) ou avec [Docker](https://spring.io/guides/gs/accessing-data-mysql)(méthode non réalisée)
+2. Installer [MySQL 8 command Line](https://openclassrooms.com/fr/courses/6971126-implementez-vos-bases-de-donnees-relationnelles-avec-sql/7152681-installez-le-sgbd-mysql) ou avec [Docker](https://spring.io/guides/gs/accessing-data-mysql)
 3. [Importer la BDD MySQL](#importer-la-base-de-donnée-mysql)
 4. Installer les [Variables d'environnement](#variable-denvironnement)
 
@@ -44,6 +44,8 @@ Si vous n'êtes pas connecté :
 `mysql -u root -p nom_de_la_base_de_donnees < mon/chemin/resources/mysql/script.sql;`
 
 Si vous êtes connecté :
+
+`use nom_de_la_base_de_donnees;`
 
 `source mon/chemin/resources/mysql/script.sql;`
 
